@@ -7,8 +7,10 @@ const Profile = () => {
 	const token = localStorage.getItem('token')
 	const userJson = localStorage.getItem('user')
 	const user = JSON.parse(userJson)
+	console.log(user.roles)
 	// const isAdmin = user?.roles.some(role => role === 'ROLE_ADMIN') ? true : false
 
+	console.log(token)
 	return (
 		<>
 			<Navbar />
@@ -28,7 +30,7 @@ const Profile = () => {
 							<SchoolIcon sx={{ mr: 1 }} />
 							<Typography variant="subtitle1">Nr indeksu: {user.nrIndeksu}</Typography>
 						</Box>
-				
+					
 					</CardContent>
 				</Card>
 			</Box>

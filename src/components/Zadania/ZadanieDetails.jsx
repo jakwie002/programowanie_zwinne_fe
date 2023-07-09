@@ -44,24 +44,24 @@ function ZadanieDetails() {
 				<Card sx={{ width: 1000, height: 600 }}>
 					<CardContent>
 						<Box sx={{ display: 'flex', alignItems: 'center', borderBottom: '1px solid grey', pb: 2, mb: 2 }}>
-							<IconButton color='primary' onClick={goBack}>
+							<IconButton color="primary" onClick={goBack}>
 								<ArrowBackIcon />
 							</IconButton>
-							<Typography variant='h4' sx={{ flexGrow: 1, textAlign: 'center' }}>
+							<Typography variant="h4" sx={{ flexGrow: 1, textAlign: 'center' }}>
 								{zadanie.nazwa}
 							</Typography>
 						</Box>
-						<Box display='flex' alignItems='center' mb={1}>
+						<Box display="flex" alignItems="center" mb={1}>
 							<AccessTime sx={{ mr: 1 }} />
-							<Typography variant='body2'>Data dodania: {formatDateTime(zadanie.dataCzasDodania)}</Typography>
+							<Typography variant="body2">Data dodania: {formatDateTime(zadanie.dataCzasDodania)}</Typography>
 						</Box>
-						<Box display='flex' alignItems='center' mb={1}>
+						<Box display="flex" alignItems="center" mb={1}>
 							<Description sx={{ mr: 1 }} />
-							<Typography variant='body1'>Opis: {zadanie.opis}</Typography>
+							<Typography variant="body1">Opis: {zadanie.opis}</Typography>
 						</Box>
-						<Box display='flex' alignItems='center'>
+						<Box display="flex" alignItems="center">
 							<EventNote sx={{ mr: 1 }} />
-							<Typography variant='body2'>Kolejność: {zadanie.kolejnosc}</Typography>
+							<Typography variant="body2">Kolejność: {zadanie.kolejnosc}</Typography>
 						</Box>
 					</CardContent>
 				</Card>

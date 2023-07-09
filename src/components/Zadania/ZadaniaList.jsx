@@ -4,49 +4,38 @@ import { DataGrid } from '@mui/x-data-grid'
 import { Box } from '@mui/system'
 import { Button, IconButton } from '@mui/material'
 import ArticleIcon from '@mui/icons-material/Article'
-import EditIcon from '@mui/icons-material/Edit'
 import { Link, Navigate } from 'react-router-dom'
 import moment from 'moment'
-import EdycjaZadaniaForm from './ZadanieForm'
-import { useCallback } from 'react'
 
 const ZadaniaList = ({ projektId }) => {
 	const [zadania, setZadania] = useState([])
-	const [editOpen, setEditOpen] = useState(false)
-	const [editId, setEditId] = useState(null)
-
 	function formatDateTime(dateTime) {
 		return moment(dateTime).format('YYYY-MM-DD HH:mm:ss')
 	}
-	const userJson = localStorage.getItem('user')
-	const user = JSON.parse(userJson)
-
-	const isAdmin = user?.roles.some((role) => role === 'ADMIN') ? true : false
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const fetchZadania = useCallback(async () => {
-		const token = localStorage.getItem('token')
-		const res = await axios.get(`http://localhost:8080/api/projekt/${projektId}/zadania`, {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-		})
-
-		if (res.data.content) {
-			const transformedData = res.data.content.map((zadanie) => ({
-				id: zadanie.zadanieId,
-				nazwa: zadanie.nazwa,
-				kolejnosc: zadanie.kolejnosc,
-				opis: zadanie.opis,
-				dataCzasDodania: formatDateTime(zadanie.dataCzasDodania),
-				projektId: zadanie.projekt.projektId,
-			}))
-			setZadania(transformedData)
-		}
-	})
 	useEffect(() => {
+		const fetchZadania = async () => {
+			const token = localStorage.getItem('token')
+			const res = await axios.get(`http://localhost:8080/api/projekt/${projektId}/zadania`, {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+
+			if (res.data.content) {
+				const transformedData = res.data.content.map(zadanie => ({
+					id: zadanie.zadanieId,
+					nazwa: zadanie.nazwa,
+					kolejnosc: zadanie.kolejnosc,
+					opis: zadanie.opis,
+					dataCzasDodania: formatDateTime(zadanie.dataCzasDodania),
+					projektId: zadanie.projekt.projektId,
+				}))
+				setZadania(transformedData)
+			}
+		}
 		fetchZadania()
-	}, [fetchZadania, projektId])
+	}, [projektId])
 
 	const columns = [
 		{ field: 'id', headerName: 'ID', width: 70 },
@@ -61,56 +50,23 @@ const ZadaniaList = ({ projektId }) => {
 			sortable: false,
 			width: 100,
 			disableClickEventBubbling: true,
-			renderCell: (params) => {
+			renderCell: params => {
 				const id = params.row.id
-
 				return (
 					<IconButton>
 						<Link to={`/zadanie/${id}`}>
 							{' '}
-							<ArticleIcon className='iconSidebar' color='primary' />
+							<ArticleIcon className="iconSidebar" color="primary" />
 						</Link>
 					</IconButton>
 				)
 			},
 		},
 	]
-	if (isAdmin) {
-		columns.push({
-			field: 'edit',
-			headerName: '',
-			sortable: false,
-			width: 100,
-			disableClickEventBubbling: true,
-			renderCell: (params) => {
-				const id = params.row.id
-
-				return (
-					<IconButton
-						onClick={() => {
-							setEditId(id)
-							setEditOpen(true)
-						}}>
-						<EditIcon color='primary' />
-					</IconButton>
-				)
-			},
-		})
-	}
 
 	return (
 		<Box sx={{ height: '80vh', width: '100%', mt: 3, mx: 2 }}>
 			<DataGrid rows={zadania} columns={columns} pageSize={5} rowsPerPageOptions={[5]} pagination autoHeight />
-			{editId && (
-				<EdycjaZadaniaForm
-					zadanieId={editId}
-					open={editOpen}
-					onClose={() => {
-						setEditOpen(false)
-						fetchZadania()
-					}}
-				/>
-			)}
 		</Box>
 	)
 }

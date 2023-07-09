@@ -35,7 +35,7 @@ const PlikList = ({ projektId }) => {
 		}
 		fetchPliki()
 	}, [projektId])
-	const downloadFile = async (fileName) => {
+	const downloadFile = async fileName => {
 		try {
 			const token = localStorage.getItem('token')
 			const response = await axios.get(`http://localhost:8080/api/downloadFile/${fileName}`, {
@@ -62,7 +62,7 @@ const PlikList = ({ projektId }) => {
 			console.log('Error downloading file:', error)
 		}
 	}
-	const deleteFile = async (plik) => {
+	const deleteFile = async plik => {
 		const token = localStorage.getItem('token')
 		try {
 			await axios.delete(`http://localhost:8080/api/pliki/${plik.id}`, {
@@ -79,11 +79,12 @@ const PlikList = ({ projektId }) => {
 				},
 			})
 			setPliki(res.data)
+			console.log(`Plik ${plik.fileName} usunięty.`)
 		} catch (err) {
 			console.error('Wystąpił błąd podczas usuwania pliku: ', err)
 		}
 	}
-	const getFileIcon = (fileName) => {
+	const getFileIcon = fileName => {
 		const ext = fileName.split('.').pop().toLowerCase()
 		switch (ext) {
 			case 'pdf':
@@ -110,7 +111,7 @@ const PlikList = ({ projektId }) => {
 	}
 	return (
 		<div>
-			<Typography variant='h6'>Pliki w projekcie:</Typography>
+			<Typography variant="h6">Pliki w projekcie:</Typography>
 			<TableContainer component={Paper}>
 				<Table>
 					<TableHead>
@@ -125,15 +126,15 @@ const PlikList = ({ projektId }) => {
 							<TableRow key={index}>
 								<TableCell>{getFileIcon(plik.fileName)}</TableCell>
 								<TableCell>
-									<Typography variant='body1' color='textPrimary'>
+									<Typography variant="body1" color="textPrimary">
 										{plik.fileName}
 									</Typography>
 								</TableCell>
 								<TableCell>
-									<Button variant='contained' color='secondary' onClick={() => deleteFile(plik)}>
+									<Button variant="contained" color="secondary" onClick={() => deleteFile(plik)}>
 										Usuń
 									</Button>
-									<Button variant='contained' color='secondary' onClick={() => downloadFile(plik.fileName)}>
+									<Button variant="contained" color="secondary" onClick={() => downloadFile(plik.fileName)}>
 										Pobierz
 									</Button>
 								</TableCell>

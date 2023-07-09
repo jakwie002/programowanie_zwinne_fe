@@ -24,6 +24,7 @@ function LoginComponent() {
 		try {
 			const response = await AuthService.login(email, password)
 			if (response) {
+				console.log(response)
 				navigate('/dashboard') // Handle successful login
 			}
 		} catch (error) {

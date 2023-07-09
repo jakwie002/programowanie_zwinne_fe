@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 const Navbar = () => {
 	const userJson = localStorage.getItem('user')
 	const user = JSON.parse(userJson)
+	console.log(user.roles)
 	const isAdmin = user?.roles.some(role => role === 'ADMIN') ? true : false
 	return (
 		<div style={{ flexGrow: 1 }}>
@@ -21,6 +22,9 @@ const Navbar = () => {
 					</Button>
 					<Button color="inherit" component={Link} to="/projekty">
 						Projekty
+					</Button>
+					<Button color="inherit" component={Link} to="/zadania">
+						Zadania
 					</Button>
 					<Button color="inherit" component={Link} to="/chat">
 						Chat

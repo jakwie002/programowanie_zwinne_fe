@@ -24,7 +24,8 @@ class AuthService {
 		try {
 			const response = await instance.post('/login', student)
 			if (response.data.token) {
-		
+				console.log(response.data.token)
+				console.log(response.data)
 				localStorage.setItem('token', response.data.token)
 				localStorage.setItem('user', JSON.stringify(response.data)) // konwersja na string JSON
 			}

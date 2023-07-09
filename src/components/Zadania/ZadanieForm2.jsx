@@ -1,20 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Button, TextField, Drawer } from '@mui/material'
+import { Button, TextField, Drawer, Select, MenuItem, FormControl, InputLabel } from '@mui/material'
 
-const ZadanieForm = ({ projektId, open, onClose }) => {
+const ZadanieForm2 = ({ open, onClose }) => {
 	const [isLoading, setIsLoading] = useState(false)
+	const [projekty, setProjekty] = useState([])
+	const [selectedProjektId, setSelectedProjektId] = useState('')
 	const [nazwa, setNazwa] = useState('')
 	const [kolejnosc, setKolejnosc] = useState('')
 	const [opis, setOpis] = useState('')
 	const [errors, setErrors] = useState({})
-	const id = projektId
 
-	
+	useEffect(() => {
+		const fetchProjekty = async () => {
+			const token = localStorage.getItem('token')
+			const res = await axios.get(`http://localhost:8080/api/projekty`, {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+
+			if (res.data.content) {
+				setProjekty(res.data.content)
+			}
+		}
+		fetchProjekty()
+	}, [])
 
 	const onSubmit = async e => {
 		e.preventDefault()
-
 
 		setIsLoading(true)
 		try {
@@ -23,7 +38,7 @@ const ZadanieForm = ({ projektId, open, onClose }) => {
 				nazwa,
 				kolejnosc: parseInt(kolejnosc),
 				opis,
-				projektId: projektId,
+				projektId: selectedProjektId,
 			}
 			console.log(newZadanie)
 			await axios.post('http://localhost:8080/api/zadania', newZadanie, {
@@ -45,6 +60,7 @@ const ZadanieForm = ({ projektId, open, onClose }) => {
 		setNazwa('')
 		setKolejnosc('')
 		setOpis('')
+		setSelectedProjektId('')
 	}
 
 	return (
@@ -84,6 +100,21 @@ const ZadanieForm = ({ projektId, open, onClose }) => {
 					error={!!errors.opis}
 					helperText={errors.opis}
 				/>
+				<FormControl variant="outlined" fullWidth margin="normal">
+					<InputLabel id="projekt-select-label">Projekt</InputLabel>
+					<Select
+						labelId="projekt-select-label"
+						id="projekt-select"
+						value={selectedProjektId}
+						onChange={e => setSelectedProjektId(e.target.value)}
+						label="Projekt">
+						{projekty.map(projekt => (
+							<MenuItem value={projekt.projektId} key={projekt.projektId}>
+								{projekt.nazwa}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
 				<Button variant="contained" color="primary" type="submit" disabled={isLoading}>
 					Dodaj zadanie
 				</Button>
@@ -92,4 +123,4 @@ const ZadanieForm = ({ projektId, open, onClose }) => {
 	)
 }
 
-export default ZadanieForm
+export default ZadanieForm2

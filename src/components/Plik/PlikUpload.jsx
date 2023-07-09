@@ -8,7 +8,7 @@ const PlikUpload = ({ projektId }) => {
 	const [uploadStatus, setUploadStatus] = useState('')
 	const [drawerOpen, setDrawerOpen] = useState(false)
 
-	const onFileChange = (event) => {
+	const onFileChange = event => {
 		setSelectedFile(event.target.files[0])
 	}
 
@@ -26,6 +26,7 @@ const PlikUpload = ({ projektId }) => {
 					Authorization: `Bearer ${token}`,
 				},
 			})
+			console.log(res.data)
 			setUploadStatus('Plik został przesłany pomyślnie.')
 			setDrawerOpen(false)
 		} catch (error) {
@@ -38,13 +39,13 @@ const PlikUpload = ({ projektId }) => {
 			<IconButton onClick={() => setDrawerOpen(true)}>
 				<CloudUploadIcon />
 			</IconButton>
-			<Drawer anchor='right' open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+			<Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
 				<Box sx={{ mt: 2, width: 250, p: 2 }}>
-					<Typography variant='h6'>Prześlij plik:</Typography>
-					<input type='file' onChange={onFileChange} />
+					<Typography variant="h6">Prześlij plik:</Typography>
+					<input type="file" onChange={onFileChange} />
 					<Button
-						variant='contained'
-						color='primary'
+						variant="contained"
+						color="primary"
 						startIcon={<CloudUploadIcon />}
 						onClick={onFileUpload}
 						disabled={!selectedFile}
@@ -52,7 +53,7 @@ const PlikUpload = ({ projektId }) => {
 						Prześlij
 					</Button>
 					{uploadStatus && (
-						<Typography variant='caption' color='textSecondary'>
+						<Typography variant="caption" color="textSecondary">
 							{uploadStatus}
 						</Typography>
 					)}

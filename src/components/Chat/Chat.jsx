@@ -23,6 +23,7 @@ function Chat() {
 
 	useEffect(() => {
 		const token = localStorage.getItem('token')
+		console.log(token)
 		axios
 			.get('http://localhost:8080/api/chat', {
 				headers: {
@@ -31,19 +32,22 @@ function Chat() {
 					Authorization: `Bearer ${token}`,
 				},
 			})
-			.then((response) => {
+			.then(response => {
+				console.log(response)
 				setMsg(response.data)
 			})
-			.catch((err) => {
+			.catch(err => {
 				console.error(err)
+				console.log(err)
 			})
 		const socket = new SockJS('http://localhost:8080/ws')
 		const stompClient = Stomp.over(socket)
 		stompClient.connect({}, function (frame) {
+			console.log('Connected: ' + frame)
 			stompClient.subscribe('/topic/public', function (greeting) {
 				const newMessage = JSON.parse(greeting.body)
 				newMessage.messageId = msg.length + 1
-				setMsg((msg) => [...msg, newMessage])
+				setMsg(msg => [...msg, newMessage])
 			})
 		})
 
@@ -81,7 +85,7 @@ function Chat() {
 			<div>
 				<div style={{ width: '100%', height: '80vh' }}>
 					<Paper style={{ margin: '1em', padding: '1em' }}>
-						<Typography variant='h4' component='h2'>
+						<Typography variant="h4" component="h2">
 							Chat Room
 						</Typography>
 						<div style={{ height: '70vh', overflowY: 'auto' }}>
@@ -90,8 +94,8 @@ function Chat() {
 									key={m.messageId}
 									style={{ margin: '1em 0', textAlign: m.sender === user.imie + user.nazwisko ? 'right' : 'left' }}>
 									<Typography
-										variant='subtitle1'
-										component='h2'
+										variant="subtitle1"
+										component="h2"
 										style={{ fontWeight: 'bold', color: stringToColor(m.sender) }}>
 										{m.sender}
 									</Typography>
@@ -104,7 +108,7 @@ function Chat() {
 											boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
 											maxWidth: '80%',
 										}}>
-										<Typography variant='body1' component='p' style={{ color: 'white', padding: '0.5em' }}>
+										<Typography variant="body1" component="p" style={{ color: 'white', padding: '0.5em' }}>
 											{m.content}
 										</Typography>
 									</div>
@@ -117,11 +121,11 @@ function Chat() {
 				<TextField
 					style={{ width: '80%' }}
 					value={text}
-					onChange={(e) => setText(e.target.value)}
-					type='text'
-					placeholder='Type a message'
+					onChange={e => setText(e.target.value)}
+					type="text"
+					placeholder="Type a message"
 				/>
-				<Button style={{ width: '20%' }} onClick={sendMessage} variant='contained' color='primary'>
+				<Button style={{ width: '20%' }} onClick={sendMessage} variant="contained" color="primary">
 					Send
 				</Button>
 			</div>

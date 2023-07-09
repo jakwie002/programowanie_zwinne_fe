@@ -11,7 +11,7 @@ import Chat from './components/Chat/Chat'
 import ProjektDetail from './components/Projekty/ProjektDetail'
 import ZadanieDetails from './components/Zadania/ZadanieDetails'
 import StudentRestController from './components/Student/StudentRestController'
-import StudentList from './components/Student/StudentRestController'
+import ZadaniaList2 from './components/Zadania/ZadaniaList2'
 const App = () => {
 	return (
 		<Routes>
@@ -23,7 +23,8 @@ const App = () => {
 			<Route exec path="/projekty" element={<Projekty />}></Route>
 			<Route path="/projekty/:id" exec element={<ProjektDetail />} />
 			<Route path="/zadanie/:id" exec element={<ZadanieDetails />} />
-			<Route path="/student" exec element={<StudentList />} />
+			<Route path="/zadania" exec element={<ZadaniaList2 />} />
+			<Route path="/student" exec element={<StudentRestController />} />
 			<Route exec path="/chat" element={<Chat />}></Route>
 			<Route exec path="*" element={<NotFoundPage />}></Route>
 		</Routes>

@@ -17,9 +17,7 @@ const ProjektDetail = () => {
 	const [projekt, setProjekt] = useState(null)
 	const navigate = useNavigate()
 	const [isFormOpen, setFormOpen] = useState(false)
-	const userJson = localStorage.getItem('user')
-	const user = JSON.parse(userJson)
-	const isAdmin = user?.roles.some((role) => role === 'ADMIN') ? true : false
+
 	useEffect(() => {
 		const fetchProjekt = async () => {
 			const token = localStorage.getItem('token')
@@ -30,6 +28,7 @@ const ProjektDetail = () => {
 				},
 			})
 			setProjekt(res.data)
+			console.log(res.data)
 		}
 		fetchProjekt()
 	}, [params.id])
@@ -70,37 +69,35 @@ const ProjektDetail = () => {
 							borderBottom: '1px solid grey',
 							padding: '8px',
 						}}>
-						<IconButton color='primary' onClick={goBack}>
+						<IconButton color="primary" onClick={goBack}>
 							<ArrowBackIcon />
 						</IconButton>
-						<Typography variant='h6'>{`Projekt ${projekt.nazwa}`}</Typography>
+						<Typography variant="h6">{`Projekt ${projekt.nazwa}`}</Typography>
 
-						{isAdmin ? (
-							<div style={{ display: 'flex', alignItems: 'center' }}>
-								<IconButton color='primary' onClick={handleFormOpen}>
-									<AddIcon />
-								</IconButton>
-								<PlikUpload projektId={params.id} />
-							</div>
-						) : null}
+						<div style={{ display: 'flex', alignItems: 'center' }}>
+							<IconButton color="primary" onClick={handleFormOpen}>
+								<AddIcon />
+							</IconButton>
+							<PlikUpload projektId={params.id} />
+						</div>
 					</Box>
 					<ZadanieForm projektId={params.id} open={isFormOpen} onClose={handleFormClose} />
 					<CardContent sx={{ display: 'flex', justifyContent: 'space-between' }}>
 						<Box sx={{ flex: 1 }}>
-							<Typography variant='h6'>Szczegóły projektu:</Typography>
-							<Typography variant='body2'>{projekt.opis}</Typography>
+							<Typography variant="h6">Szczegóły projektu:</Typography>
+							<Typography variant="body2">{projekt.opis}</Typography>
 						</Box>
 						<Box sx={{ borderLeft: '1px solid grey', pl: 3 }}>
-							<Typography variant='subtitle1'>Godziny:</Typography>
+							<Typography variant="subtitle1">Godziny:</Typography>
 							<Box sx={{ display: 'flex', alignItems: 'center' }}>
 								<EventNote sx={{ mr: 1 }} />
-								<Typography variant='caption'>
+								<Typography variant="caption">
 									Data utworzenia: {formatDateTime(projekt.dataCzasUtworzeniaDateTime)}
 								</Typography>
 							</Box>
 							<Box sx={{ display: 'flex', alignItems: 'center' }}>
 								<Description sx={{ mr: 1 }} />
-								<Typography variant='caption'>
+								<Typography variant="caption">
 									Data modyfikacji: {formatDateTime(projekt.dataCzasModyfikacji)}
 								</Typography>
 							</Box>

@@ -22,6 +22,7 @@ const RegisterComponent = () => {
 		AuthService.register(student)
 			.then(response => {
 				// Handle server respons
+				alert('Dodano użytkownika')
 				console.log(response.data)
 			})
 			.catch(error => {

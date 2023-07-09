@@ -20,7 +20,7 @@ const ZadanieFormEdit = ({ zadanie, open, onClose }) => {
 		return Object.keys(newErrors).length === 0
 	}
 
-	const onSubmit = async (e) => {
+	const onSubmit = async e => {
 		e.preventDefault()
 
 		if (!validate()) return
@@ -35,6 +35,7 @@ const ZadanieFormEdit = ({ zadanie, open, onClose }) => {
 				opis,
 				projektId: zadanie.projektId,
 			}
+			console.log(updatedZadanie)
 			await axios.put(`http://localhost:8080/api/zadania/${id}`, updatedZadanie, {
 				headers: {
 					'Content-Type': 'application/json',
@@ -50,11 +51,11 @@ const ZadanieFormEdit = ({ zadanie, open, onClose }) => {
 	}
 
 	return (
-		<Drawer anchor='right' open={open} onClose={onClose}>
+		<Drawer anchor="right" open={open} onClose={onClose}>
 			<form onSubmit={onSubmit} style={{ margin: '1rem', width: '300px' }}>
 				<h1>Edytuj zadanie</h1>
 				{/* Pozostały kod formularza pozostaje bez zmian */}
-				<Button variant='contained' color='primary' type='submit' disabled={isLoading}>
+				<Button variant="contained" color="primary" type="submit" disabled={isLoading}>
 					Zapisz zmiany
 				</Button>
 			</form>
